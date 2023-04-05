@@ -5,9 +5,6 @@ Django JS Reverse
 .. image:: https://img.shields.io/pypi/v/django-js-reverse.svg
    :target: https://pypi.python.org/pypi/django-js-reverse/
 
-.. image:: https://img.shields.io/travis/ierror/django-js-reverse/master.svg
-   :target: https://travis-ci.org/ierror/django-js-reverse
-
 .. image:: https://img.shields.io/coveralls/ierror/django-js-reverse/master.svg
    :alt: Coverage Status
    :target: https://coveralls.io/r/ierror/django-js-reverse?branch=master
