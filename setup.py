@@ -2,18 +2,12 @@
 # -*- coding: utf-8 -*-
 import codecs
 import os
-import sys
 from setuptools import setup, find_packages
 
-if sys.version_info < (3, 7):
-    INSTALL_REQUIRES = [
-        'Django>=1.5',
-    ]
-else:
-    INSTALL_REQUIRES = [
-        'Django>=1.5',
-        'packaging>=21.3'
-    ]
+INSTALL_REQUIRES = [
+    'Django>=3.2',
+    'packaging>=21.3'
+]
 
 
 def read(*parts):

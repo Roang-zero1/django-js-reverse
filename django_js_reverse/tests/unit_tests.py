@@ -1,27 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
+import contextlib
 import io
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
-import unittest
 import tempfile
-import contextlib
-import shutil
+import unittest
 
-import six
 import django
+import js2py
+import six
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.core.management import call_command
 from django.template import Context, RequestContext, Template
 from django.utils.encoding import smart_str
-import js2py
-from helper import is_django_ver_gte_2
 from utils import script_prefix
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..') + os.sep)
@@ -223,9 +220,8 @@ class JSReverseViewTestCaseMinified(AbstractJSReverseTestCase, TestCase):
         self.assertEqualJSUrlEval('Urls.test_two_url_args(0.00001, 5.5)', get_url)
 
     def test_django_path_syntax(self):
-        if is_django_ver_gte_2():
-            self.assertEqualJSUrlEval('Urls.test_django_gte_2_path_syntax(42, "foo")',
-                                      '/test_django_gte_2_path_syntax/42/foo/')
+        self.assertEqualJSUrlEval('Urls.test_django_gte_2_path_syntax(42, "foo")',
+                                  '/test_django_gte_2_path_syntax/42/foo/')
 
 
 @override_settings(JS_REVERSE_JS_MINIFY=False)
@@ -262,7 +258,7 @@ class JSReverseStaticFileSaveTest(AbstractJSReverseTestCase, TestCase):
 
         path = os.path.join(settings.STATIC_ROOT, 'django_js_reverse', 'js', 'reverse.js')
         with io.open(path) as f:
-          content1 = f.read()
+            content1 = f.read()
 
         r2 = self.client.get('/jsreverse/')
         content2 = r2.content.decode()

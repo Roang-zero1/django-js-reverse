@@ -2,19 +2,11 @@
 from copy import copy
 
 from django.conf.urls import include as django_include
-try:
-    from django.urls import re_path as url
-except ImportError:
-    from django.conf.urls import url
+from django.urls import path
+from django.urls import re_path as url
 from django.views.generic import View
-from django_js_reverse.tests.helper import is_django_ver_gte_2
+
 from django_js_reverse.views import urls_js
-
-try:
-    from django.urls import path
-except ImportError:
-    pass
-
 
 dummy_view = View.as_view()
 
@@ -35,11 +27,10 @@ basic_patterns = [
         name='test_duplicate_argcount'),
 ]
 
-if is_django_ver_gte_2():
-    basic_patterns.append(
-        path('test_django_gte_2_path_syntax/<int:arg_one>/<str:arg_two>/', dummy_view,
-             name='test_django_gte_2_path_syntax'),
-    )
+basic_patterns.append(
+    path('test_django_gte_2_path_syntax/<int:arg_one>/<str:arg_two>/', dummy_view,
+          name='test_django_gte_2_path_syntax'),
+)
 
 urlpatterns = copy(basic_patterns)
 
@@ -51,9 +42,6 @@ urlexclude = [
 
 
 def include(v, **kwargs):
-    if not is_django_ver_gte_2():
-        return django_include(v, **kwargs)
-
     return django_include((v, 'django_js_reverse'), **kwargs)
 
 
