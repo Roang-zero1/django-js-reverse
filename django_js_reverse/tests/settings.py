@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 
 DATABASES = {
     'default': {
@@ -30,7 +30,7 @@ TEMPLATES = [
     },
 ]
 
-STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'tmp', 'static_root')
+STATIC_ROOT = Path(__file__).parent.joinpath('tmp', 'static_root')
 
 CACHES = {
     'default': {

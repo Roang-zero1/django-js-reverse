@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-import os
 import sys
+from pathlib import Path
+
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
@@ -18,7 +19,7 @@ REQUIRES_SYSTEM_CHECKS = [False]
 class Command(BaseCommand):
     help = 'Creates a static urls-js file for django-js-reverse'
     requires_system_checks = REQUIRES_SYSTEM_CHECKS
-    def get_location(self):
+    def get_location(self) -> Path:
         output_path = getattr(settings, 'JS_REVERSE_OUTPUT_PATH', JS_OUTPUT_PATH)
         if output_path:
             return output_path
@@ -27,7 +28,7 @@ class Command(BaseCommand):
             raise ImproperlyConfigured(
                 'The collectstatic_js_reverse command needs settings.JS_REVERSE_OUTPUT_PATH or settings.STATIC_ROOT to be set.')
 
-        return os.path.join(settings.STATIC_ROOT, 'django_js_reverse', 'js')
+        return Path(settings.STATIC_ROOT).joinpath('django_js_reverse', 'js')
 
     def handle(self, *args, **options):
         location = self.get_location()

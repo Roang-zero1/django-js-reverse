@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import codecs
-import os
 from setuptools import setup, find_packages
+
+from pathlib import Path
 
 INSTALL_REQUIRES = [
     'Django>=3.2',
@@ -11,8 +11,8 @@ INSTALL_REQUIRES = [
 
 
 def read(*parts):
-    filename = os.path.join(os.path.dirname(__file__), *parts)
-    with codecs.open(filename, encoding='utf-8') as fp:
+    file_path = Path(__file__).parent.joinpath(*parts)
+    with file_path.open(encoding='utf-8') as fp:
         return fp.read()
 
 

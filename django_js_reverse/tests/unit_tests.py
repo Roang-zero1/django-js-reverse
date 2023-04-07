@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import contextlib
-import io
 import json
 import os
 import re
@@ -10,6 +9,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from pathlib import Path
 
 import django
 import js2py
@@ -21,7 +21,7 @@ from django.template import Context, RequestContext, Template
 from django.utils.encoding import smart_str
 from utils import script_prefix
 
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..') + os.sep)
+sys.path.insert(0, f"{Path(__file__).absolute().joinpath('..', '..')}{os.sep}")
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 
 from django.test import TestCase, RequestFactory  # noqa: E402 isort:skip
@@ -256,8 +256,8 @@ class JSReverseStaticFileSaveTest(AbstractJSReverseTestCase, TestCase):
     def test_reverse_js_file_save(self):
         call_command('collectstatic_js_reverse')
 
-        path = os.path.join(settings.STATIC_ROOT, 'django_js_reverse', 'js', 'reverse.js')
-        with io.open(path) as f:
+        path = Path(settings.STATIC_ROOT).joinpath('django_js_reverse', 'js', 'reverse.js')
+        with path.open() as f:
             content1 = f.read()
 
         r2 = self.client.get('/jsreverse/')
@@ -275,7 +275,8 @@ class JSReverseStaticFileSaveTest(AbstractJSReverseTestCase, TestCase):
         with mkdtemp(__name__) as js_output_path, override_settings(JS_REVERSE_OUTPUT_PATH=js_output_path):
             call_command('collectstatic_js_reverse')
 
-            with io.open(os.path.join(js_output_path, 'reverse.js')) as f:
+            path = Path(js_output_path).joinpath('reverse.js')
+            with path.open() as f:
                 content1 = f.read()
 
             r2 = self.client.get('/jsreverse/')
