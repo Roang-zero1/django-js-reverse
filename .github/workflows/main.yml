@@ -34,13 +34,31 @@ jobs:
       - name: tox
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: tox -e py,lint,coveralls,release
+        run: tox -e py,lint,release
 
       - name: upload dist
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}_${{ matrix.python-version}}_dist
           path: dist
+
+      - name: Coveralls Parallel
+        uses: coverallsapp/github-action@v1
+        with:
+            flag-name: run-${{ matrix.os }}_${{ matrix.python-version}}
+            parallel: true
+
+  upload-coveralls:
+    needs: tox
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@v1
+      with:
+        parallel-finished: true
+        carryforward: "run-ubuntu-latest-_3.7,run-ubuntu-latest-_3.8,run-ubuntu-latest-_3.9,run-ubuntu-latest-_3.10"
 
   all-successful:
     # https://github.community/t/is-it-possible-to-require-all-github-actions-tasks-to-pass-without-enumerating-them/117957/4?u=graingert
